@@ -8,24 +8,23 @@ export default function RegisterPage() {
     const [password, setPassword] = useState('');
     const [creatingUser, setCreatingUser] = useState(false);
     const [userCreated, setUserCreated] = useState(false);
-    const [error,setError] = useState(false);
+    const [error, setError] = useState(false);
 
     async function handleFormSubmit(ev) {
         ev.preventDefault();
         setCreatingUser(true)
-        setError(false)
-        setUserCreated(false)
-        const res = await fetch('/api/register', {
+        const response = await fetch('/api/register', {
             method: 'POST',
             body: JSON.stringify({ email, password }),
             headers: { 'Content-Type': 'application/json' }
         });
-        if(res.ok){
+        if (response.ok) {
             setUserCreated(true);
-        }else{
+        } else {
             setError(true)
+            userCreated(false)
         }
-        setCreatingUser(false);
+        setCreatingUser(false)
     }
     return (
         <section className="mt-8">
@@ -34,13 +33,13 @@ export default function RegisterPage() {
             </h1>
             {userCreated && (
                 <div className="my-4 text-center">
-                    User created.<br/> Now you can 
+                    User created.<br /> Now you can
                     <Link className="underline" href={'/login'}> Login &raquo;</Link>
                 </div>
             )}
-            {error &&(
+            {error && (
                 <div className="my-4 text-center">
-                    An error has occurred. <br/>
+                    An error has occurred. <br />
                     Please try again later
                 </div>
             )}
@@ -60,6 +59,10 @@ export default function RegisterPage() {
                 <button className="flex gap-4 justify-center">
                     <Image src={"/google.png"} width={24} height={24} alt="google" />
                     Login with google</button>
+                <div className="text-center my-4 text-gray-500 border-t pt-4">
+                    Existing account? {' '}
+                    <Link className="underline" href={"/login"}>Login here &raquo;</Link>
+                </div>
             </form>
             <div>
 
